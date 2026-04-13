@@ -80,21 +80,28 @@ def list_documents():
 
 @app.get("/tech-radar")
 def tech_radar():
-    """Fetch latest AI/LLM tech trends and summarize."""
+    """Fetch latest AI/LLM tech trends, grouped by source."""
     from scraper import fetch_all, summarize_items
     items = fetch_all()
-    summary = summarize_items(items, limit=5)
+    summary = summarize_items(items, limit=8)
+
+    # Group by source
+    grouped: dict[str, list] = {}
+    for item in items:
+        source = item["source"]
+        if source not in grouped:
+            grouped[source] = []
+        grouped[source].append({
+            "title": item["title"],
+            "url": item["url"],
+            "description": item.get("description", ""),
+            "date": item.get("date", ""),
+        })
+
     return {
-        "items": [
-            {
-                "source": item["source"],
-                "title": item["title"],
-                "url": item["url"],
-                "description": item.get("description", ""),
-                "date": item.get("date", ""),
-            }
-            for item in items[:15]
-        ],
+        "grouped": grouped,
+        "total": len(items),
+        "sources": len(grouped),
         "summary": summary,
     }
 

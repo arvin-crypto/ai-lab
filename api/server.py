@@ -78,6 +78,27 @@ def list_documents():
     return {"documents": list(documents.keys()), "count": len(documents)}
 
 
+@app.get("/tech-radar")
+def tech_radar():
+    """Fetch latest AI/LLM tech trends and summarize."""
+    from scraper import fetch_all, summarize_items
+    items = fetch_all()
+    summary = summarize_items(items, limit=5)
+    return {
+        "items": [
+            {
+                "source": item["source"],
+                "title": item["title"],
+                "url": item["url"],
+                "description": item.get("description", ""),
+                "date": item.get("date", ""),
+            }
+            for item in items[:15]
+        ],
+        "summary": summary,
+    }
+
+
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8000)

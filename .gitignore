@@ -5,3 +5,5 @@ __pycache__/
 digest.md
 *.faiss
 
+web/node_modules/
+web/.next/

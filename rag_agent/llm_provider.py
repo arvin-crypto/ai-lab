@@ -16,7 +16,7 @@ def get_llm(temperature: float = 0) -> BaseChatModel:
     if provider == "gemini":
         from langchain_google_genai import ChatGoogleGenerativeAI
         return ChatGoogleGenerativeAI(
-            model="gemini-2.0-flash",
+            model=os.environ.get("GEMINI_MODEL", "gemini-2.5-flash"),
             temperature=temperature,
             google_api_key=os.environ.get("GOOGLE_API_KEY"),
         )

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
+import { Radio, TrendingUp, FileText, Bot, Flame, GitBranch, Brain, Wrench, Mic, Sparkles, Newspaper, GraduationCap, Rss, Cpu, Globe, Workflow, Search, MessageSquare, Layers, Activity, Zap, Box } from "lucide-react";
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
@@ -59,19 +60,19 @@ export default function Home() {
     fetchDocCount();
   };
 
-  const sourceStyle: Record<string, { dot: string; bg: string; text: string; border: string; icon: string }> = {
-    HuggingFace:      { dot: "bg-yellow-400",  bg: "bg-yellow-500/8",  text: "text-yellow-400",  border: "border-yellow-500/15", icon: "🤗" },
-    GitHub:           { dot: "bg-zinc-300",     bg: "bg-zinc-500/8",    text: "text-zinc-300",    border: "border-zinc-500/15",   icon: "🐙" },
-    "LangChain Blog": { dot: "bg-emerald-400", bg: "bg-emerald-500/8", text: "text-emerald-400", border: "border-emerald-500/15", icon: "🦜" },
-    "Lilian Weng":    { dot: "bg-blue-400",    bg: "bg-blue-500/8",    text: "text-blue-400",    border: "border-blue-500/15",   icon: "🧠" },
-    "Simon Willison": { dot: "bg-orange-400",  bg: "bg-orange-500/8",  text: "text-orange-400",  border: "border-orange-500/15", icon: "🔧" },
-    "Latent Space":   { dot: "bg-pink-400",    bg: "bg-pink-500/8",    text: "text-pink-400",    border: "border-pink-500/15",   icon: "🎙" },
-    "Anthropic Blog": { dot: "bg-amber-400",   bg: "bg-amber-500/8",   text: "text-amber-400",   border: "border-amber-500/15",  icon: "🔮" },
-    "OpenAI Blog":    { dot: "bg-teal-400",    bg: "bg-teal-500/8",    text: "text-teal-400",    border: "border-teal-500/15",   icon: "💚" },
-    "AI News":        { dot: "bg-red-400",     bg: "bg-red-500/8",     text: "text-red-400",     border: "border-red-500/15",    icon: "📰" },
-    "DeepLearning.AI":{ dot: "bg-cyan-400",    bg: "bg-cyan-500/8",    text: "text-cyan-400",    border: "border-cyan-500/15",   icon: "🎓" },
+  const sourceStyle: Record<string, { dot: string; bg: string; text: string; border: string; icon: React.ReactNode }> = {
+    HuggingFace:      { dot: "bg-yellow-400",  bg: "bg-yellow-500/8",  text: "text-yellow-400",  border: "border-yellow-500/15", icon: <Cpu size={14} /> },
+    GitHub:           { dot: "bg-zinc-300",     bg: "bg-zinc-500/8",    text: "text-zinc-300",    border: "border-zinc-500/15",   icon: <GitBranch size={14} /> },
+    "LangChain Blog": { dot: "bg-emerald-400", bg: "bg-emerald-500/8", text: "text-emerald-400", border: "border-emerald-500/15", icon: <Workflow size={14} /> },
+    "Lilian Weng":    { dot: "bg-blue-400",    bg: "bg-blue-500/8",    text: "text-blue-400",    border: "border-blue-500/15",   icon: <Brain size={14} /> },
+    "Simon Willison": { dot: "bg-orange-400",  bg: "bg-orange-500/8",  text: "text-orange-400",  border: "border-orange-500/15", icon: <Wrench size={14} /> },
+    "Latent Space":   { dot: "bg-pink-400",    bg: "bg-pink-500/8",    text: "text-pink-400",    border: "border-pink-500/15",   icon: <Mic size={14} /> },
+    "Anthropic Blog": { dot: "bg-amber-400",   bg: "bg-amber-500/8",   text: "text-amber-400",   border: "border-amber-500/15",  icon: <Sparkles size={14} /> },
+    "OpenAI Blog":    { dot: "bg-teal-400",    bg: "bg-teal-500/8",    text: "text-teal-400",    border: "border-teal-500/15",   icon: <Globe size={14} /> },
+    "AI News":        { dot: "bg-red-400",     bg: "bg-red-500/8",     text: "text-red-400",     border: "border-red-500/15",    icon: <Newspaper size={14} /> },
+    "DeepLearning.AI":{ dot: "bg-cyan-400",    bg: "bg-cyan-500/8",    text: "text-cyan-400",    border: "border-cyan-500/15",   icon: <GraduationCap size={14} /> },
   };
-  const defaultStyle = { dot: "bg-purple-400", bg: "bg-purple-500/8", text: "text-purple-400", border: "border-purple-500/15", icon: "📡" };
+  const defaultStyle = { dot: "bg-purple-400", bg: "bg-purple-500/8", text: "text-purple-400", border: "border-purple-500/15", icon: <Rss size={14} /> };
   const getStyle = (s: string) => sourceStyle[s] || defaultStyle;
 
   const techStack = [
@@ -113,15 +114,15 @@ export default function Home() {
         {/* Stats Row */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-5">
           {[
-            { label: "Sources", value: totalSources || "-", sub: "active feeds", color: "text-emerald-400", icon: "📡" },
-            { label: "Items Tracked", value: totalItems || "-", sub: "latest trends", color: "text-purple-400", icon: "📊" },
-            { label: "RAG Documents", value: docCount || "-", sub: "indexed", color: "text-blue-400", icon: "📄" },
-            { label: "Agent Queries", value: queryCount || "-", sub: "this session", color: "text-yellow-400", icon: "🤖" },
+            { label: "Sources", value: totalSources || "-", sub: "active feeds", color: "text-emerald-400", icon: <Radio size={16} className="text-emerald-400/50" /> },
+            { label: "Items Tracked", value: totalItems || "-", sub: "latest trends", color: "text-purple-400", icon: <TrendingUp size={16} className="text-purple-400/50" /> },
+            { label: "RAG Documents", value: docCount || "-", sub: "indexed", color: "text-blue-400", icon: <FileText size={16} className="text-blue-400/50" /> },
+            { label: "Agent Queries", value: queryCount || "-", sub: "this session", color: "text-yellow-400", icon: <MessageSquare size={16} className="text-yellow-400/50" /> },
           ].map((s) => (
             <div key={s.label} className="bg-zinc-900/40 border border-zinc-800/40 rounded-xl p-4">
               <div className="flex items-center justify-between mb-2">
                 <span className="text-[11px] text-zinc-500 font-medium">{s.label}</span>
-                <span className="text-base">{s.icon}</span>
+                {s.icon}
               </div>
               <div className={`text-2xl font-bold ${s.color}`}>{s.value}</div>
               <div className="text-[10px] text-zinc-600 mt-0.5">{s.sub}</div>
@@ -133,7 +134,7 @@ export default function Home() {
         <div className="bg-gradient-to-r from-purple-500/[0.06] to-emerald-500/[0.06] border border-zinc-800/40 rounded-xl p-5 mb-5">
           <div className="flex items-center justify-between mb-3">
             <h2 className="text-sm font-semibold flex items-center gap-2">
-              <span className="w-5 h-5 rounded-md bg-purple-500/20 flex items-center justify-center text-[10px]">AI</span>
+              <span className="w-5 h-5 rounded-md bg-purple-500/20 flex items-center justify-center"><Sparkles size={10} className="text-purple-400" /></span>
               Tech Radar Summary
             </h2>
             <button onClick={fetchRadar} disabled={radarLoading} className="text-[10px] text-purple-400 hover:text-purple-300 disabled:text-zinc-600 px-3 py-1 border border-purple-500/20 rounded-lg hover:bg-purple-500/10 transition-all">
@@ -156,7 +157,7 @@ export default function Home() {
                       {/* Card Header */}
                       <div className="px-4 py-3 border-b border-zinc-800/30 flex items-center justify-between">
                         <div className="flex items-center gap-2">
-                          <span className="text-base">{s.icon}</span>
+                          <span className={s.text}>{s.icon}</span>
                           <span className={`text-xs font-semibold ${s.text}`}>{source}</span>
                         </div>
                         <span className="text-[10px] text-zinc-600">{items.length} items</span>
@@ -244,7 +245,7 @@ export default function Home() {
             <div className="bg-zinc-900/40 border border-zinc-800/40 rounded-xl flex flex-col lg:sticky lg:top-20" style={{ height: "calc(100vh - 200px)", minHeight: "500px" }}>
               <div className="px-4 py-3 border-b border-zinc-800/40 flex items-center justify-between shrink-0">
                 <div className="flex items-center gap-2">
-                  <div className="w-6 h-6 rounded-lg bg-emerald-500/20 flex items-center justify-center text-[10px]">🤖</div>
+                  <div className="w-6 h-6 rounded-lg bg-emerald-500/20 flex items-center justify-center"><Bot size={12} className="text-emerald-400" /></div>
                   <span className="text-sm font-semibold">Agent</span>
                 </div>
                 <span className="text-[9px] text-zinc-600">RAG + LangGraph</span>
@@ -253,7 +254,7 @@ export default function Home() {
               <div className="flex-1 overflow-y-auto p-3 space-y-2.5">
                 {messages.length === 0 && (
                   <div className="flex flex-col items-center justify-center h-full px-3">
-                    <div className="w-10 h-10 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-lg mb-3">🤖</div>
+                    <div className="w-10 h-10 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center mb-3"><Bot size={20} className="text-emerald-400" /></div>
                     <p className="text-[11px] text-zinc-500 text-center mb-4">Ask about uploaded documents</p>
                     <div className="flex flex-col gap-1.5 w-full">
                       {["What is RAG?", "Summarize MCP protocol", "What are AI Agents?"].map((q) => (

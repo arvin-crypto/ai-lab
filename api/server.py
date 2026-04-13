@@ -36,7 +36,10 @@ class AnswerResponse(BaseModel):
 
 @app.get("/health")
 def health():
-    return {"status": "ok", "model": "llama3"}
+    import os
+    provider = os.environ.get("LLM_PROVIDER", "ollama")
+    model = "gemini-2.0-flash" if provider == "gemini" else "llama3"
+    return {"status": "ok", "provider": provider, "model": model}
 
 
 @app.post("/upload")

@@ -3,11 +3,11 @@ AI Agent — LangChain agent with custom tools for document Q&A.
 Demonstrates tool calling, multi-step reasoning, and RAG integration.
 """
 
-from langchain_ollama import ChatOllama
 from langchain.agents import AgentExecutor, create_react_agent
 from langchain.tools import Tool
 from langchain.prompts import PromptTemplate
 from retriever import build_index, search
+from llm_provider import get_llm
 
 
 # Global index (built once, reused)
@@ -33,14 +33,14 @@ def search_documents(query: str) -> str:
 
 def summarize_text(text: str) -> str:
     """Summarize tool — condense text using LLM."""
-    llm = ChatOllama(model="llama3", temperature=0)
+    llm = get_llm()
     response = llm.invoke(f"Summarize the following text in 2-3 sentences:\n\n{text}")
     return response.content
 
 
 def translate_text(text: str) -> str:
     """Translate tool — translate text to Chinese."""
-    llm = ChatOllama(model="llama3", temperature=0)
+    llm = get_llm()
     response = llm.invoke(f"Translate the following text to Traditional Chinese:\n\n{text}")
     return response.content
 
@@ -89,7 +89,7 @@ Question: {input}
 
 def create_agent():
     """Create a ReAct agent with tools."""
-    llm = ChatOllama(model="llama3", temperature=0)
+    llm = get_llm()
     agent = create_react_agent(llm, tools, AGENT_PROMPT)
     return AgentExecutor(agent=agent, tools=tools, verbose=True, handle_parsing_errors=True, max_iterations=3)
 

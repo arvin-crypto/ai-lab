@@ -3,23 +3,17 @@ RAG Retriever — embed documents and search with FAISS vector store.
 Uses Ollama for local embeddings (no API key needed).
 """
 
-from langchain_ollama import OllamaEmbeddings
 from langchain_community.vectorstores import FAISS
 from langchain.schema import Document
 from chunker import chunk_document
-
-
-def create_embeddings(model: str = "llama3"):
-    """Create Ollama embeddings instance."""
-    return OllamaEmbeddings(model=model)
+from llm_provider import get_embeddings
 
 
 def build_index(text: str, chunk_size: int = 500) -> FAISS:
     """Build a FAISS index from document text."""
     chunks = chunk_document(text, chunk_size=chunk_size)
     docs = [Document(page_content=chunk) for chunk in chunks]
-    embeddings = create_embeddings()
-    return FAISS.from_documents(docs, embeddings)
+    return FAISS.from_documents(docs, get_embeddings())
 
 
 def search(index: FAISS, query: str, k: int = 3) -> list[Document]:

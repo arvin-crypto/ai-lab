@@ -3,10 +3,14 @@ Tech Radar — scrape AI/LLM news from HuggingFace, GitHub Trending, and RSS fee
 Auto-summarize with local LLM.
 """
 
+import os
+import sys
 import requests
 import feedparser
 from datetime import datetime
-from langchain_ollama import ChatOllama
+
+sys.path.append(os.path.join(os.path.dirname(__file__), "../rag_agent"))
+from llm_provider import get_llm
 
 
 def fetch_huggingface_trending(limit: int = 10) -> list[dict]:
@@ -125,7 +129,7 @@ def summarize_items(items: list[dict], limit: int = 5) -> str:
     if not items:
         return "No items to summarize."
 
-    llm = ChatOllama(model="llama3", temperature=0)
+    llm = get_llm()
 
     items_text = "\n".join(
         [f"- [{item['source']}] {item['title']}: {item['description'][:100]}" for item in items[:limit]]

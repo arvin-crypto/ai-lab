@@ -8,8 +8,8 @@ Flow:
 
 from typing import TypedDict, Literal
 from langgraph.graph import StateGraph, END
-from langchain_ollama import ChatOllama
 from retriever import build_index, search
+from llm_provider import get_llm
 
 
 # --- State ---
@@ -23,7 +23,7 @@ class AgentState(TypedDict):
 
 # --- LLM ---
 
-llm = ChatOllama(model="llama3", temperature=0)
+llm = get_llm()
 
 # --- Index ---
 

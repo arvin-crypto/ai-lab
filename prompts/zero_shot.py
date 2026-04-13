@@ -3,10 +3,12 @@ Zero-shot vs Few-shot prompt comparison.
 Demonstrates prompt engineering techniques mentioned in the ASUS JD.
 """
 
-from langchain_ollama import ChatOllama
+import sys
+sys.path.append("../rag_agent")
+from llm_provider import get_llm
 
 
-llm = ChatOllama(model="llama3", temperature=0)
+llm = get_llm()
 
 
 def zero_shot(question: str, context: str) -> str:

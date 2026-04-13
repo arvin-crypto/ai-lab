@@ -92,11 +92,23 @@ export default function Home() {
 
   const sourceColors: Record<string, { bg: string; text: string; border: string; dot: string }> = {
     HuggingFace: { bg: "bg-yellow-500/10", text: "text-yellow-400", border: "border-yellow-500/20", dot: "bg-yellow-400" },
+    GitHub: { bg: "bg-zinc-500/10", text: "text-zinc-300", border: "border-zinc-500/20", dot: "bg-zinc-300" },
     "LangChain Blog": { bg: "bg-emerald-500/10", text: "text-emerald-400", border: "border-emerald-500/20", dot: "bg-emerald-400" },
-    "Lilian Weng Blog": { bg: "bg-blue-500/10", text: "text-blue-400", border: "border-blue-500/20", dot: "bg-blue-400" },
+    "Lilian Weng": { bg: "bg-blue-500/10", text: "text-blue-400", border: "border-blue-500/20", dot: "bg-blue-400" },
+    "Simon Willison": { bg: "bg-orange-500/10", text: "text-orange-400", border: "border-orange-500/20", dot: "bg-orange-400" },
+    "Latent Space": { bg: "bg-pink-500/10", text: "text-pink-400", border: "border-pink-500/20", dot: "bg-pink-400" },
+    "Anthropic Blog": { bg: "bg-amber-500/10", text: "text-amber-400", border: "border-amber-500/20", dot: "bg-amber-400" },
+  };
+  const moreColors: Record<string, typeof defaultColor> = {
+    "OpenAI Blog": { bg: "bg-teal-500/10", text: "text-teal-400", border: "border-teal-500/20", dot: "bg-teal-400" },
+    "AI News": { bg: "bg-red-500/10", text: "text-red-400", border: "border-red-500/20", dot: "bg-red-400" },
+    "DeepLearning.AI": { bg: "bg-cyan-500/10", text: "text-cyan-400", border: "border-cyan-500/20", dot: "bg-cyan-400" },
+  };
+  const getColorForSource = (s: string) => {
+    return sourceColors[s] || moreColors[s] || defaultColor;
   };
   const defaultColor = { bg: "bg-purple-500/10", text: "text-purple-400", border: "border-purple-500/20", dot: "bg-purple-400" };
-  const getColor = (s: string) => sourceColors[s] || defaultColor;
+  const getColor = (s: string) => getColorForSource(s);
 
   const sourceCounts = radarItems.reduce((acc, item) => {
     acc[item.source] = (acc[item.source] || 0) + 1;

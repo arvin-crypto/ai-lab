@@ -53,17 +53,66 @@ def fetch_rss_feed(url: str, source_name: str, limit: int = 10) -> list[dict]:
         return []
 
 
+def fetch_github_trending(limit: int = 10) -> list[dict]:
+    """Fetch trending AI repositories from GitHub via RSS."""
+    # GitHub trending doesn't have an API, use curated repos RSS
+    feeds = [
+        ("https://github.com/langchain-ai/langchain/releases.atom", "langchain-ai/langchain"),
+        ("https://github.com/run-llama/llama_index/releases.atom", "run-llama/llama_index"),
+        ("https://github.com/ollama/ollama/releases.atom", "ollama/ollama"),
+        ("https://github.com/anthropics/anthropic-sdk-python/releases.atom", "anthropics/sdk-python"),
+        ("https://github.com/modelcontextprotocol/servers/releases.atom", "mcp/servers"),
+    ]
+    items = []
+    for url, repo_name in feeds:
+        try:
+            feed = feedparser.parse(url)
+            for entry in feed.entries[:2]:
+                items.append({
+                    "source": "GitHub",
+                    "title": f"{repo_name}: {entry.get('title', '')[:80]}",
+                    "url": entry.get("link", ""),
+                    "description": (entry.get("summary", "") or "")[:200],
+                    "date": entry.get("published", "")[:10] if entry.get("published") else datetime.now().strftime("%Y-%m-%d"),
+                })
+        except Exception as e:
+            print(f"GitHub RSS error ({repo_name}): {e}")
+    return items[:limit]
+
+
+def fetch_ai_newsletters(limit: int = 10) -> list[dict]:
+    """Fetch from AI newsletters and aggregators."""
+    feeds = [
+        ("https://buttondown.com/ainews/rss", "AI News"),
+        ("https://www.deeplearning.ai/the-batch/feed/", "DeepLearning.AI"),
+    ]
+    items = []
+    for url, name in feeds:
+        items.extend(fetch_rss_feed(url, name, 5))
+    return items[:limit]
+
+
 def fetch_all() -> list[dict]:
     """Fetch from all sources."""
     items = []
 
-    # HuggingFace trending
+    # HuggingFace trending models
     items.extend(fetch_huggingface_trending(10))
 
-    # AI news RSS feeds
+    # GitHub releases (AI frameworks)
+    items.extend(fetch_github_trending(10))
+
+    # AI newsletters
+    items.extend(fetch_ai_newsletters(10))
+
+    # AI blogs (RSS)
     rss_sources = [
         ("https://blog.langchain.dev/rss/", "LangChain Blog"),
-        ("https://lilianweng.github.io/index.xml", "Lilian Weng Blog"),
+        ("https://lilianweng.github.io/index.xml", "Lilian Weng"),
+        ("https://simonwillison.net/atom/everything/", "Simon Willison"),
+        ("https://www.latent.space/feed", "Latent Space"),
+        ("https://blog.anthropic.com/rss.xml", "Anthropic Blog"),
+        ("https://openai.com/blog/rss.xml", "OpenAI Blog"),
     ]
     for url, name in rss_sources:
         items.extend(fetch_rss_feed(url, name, 5))

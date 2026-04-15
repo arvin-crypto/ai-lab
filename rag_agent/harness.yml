@@ -1,0 +1,30 @@
+# Agent Harness Configuration
+# Controls agent behavior: permissions, tools, guardrails
+
+name: doc-assistant
+model: llama3
+provider: ollama  # or "gemini"
+max_tokens: 4096
+temperature: 0.0
+language: zh-TW
+
+system_prompt: |
+  你是一個文件助手。根據提供的文件內容回答問題。
+  如果文件中找不到答案，誠實說「文件中沒有相關資訊」。
+  不要編造答案。
+
+# Feedforward: define which tools the agent can use
+tools:
+  - name: SearchDocuments
+    enabled: true
+    max_calls: 5
+  - name: Summarize
+    enabled: true
+    max_calls: 3
+  - name: Translate
+    enabled: true
+    max_calls: 3
+
+# Feedback: agent behavior limits
+max_iterations: 3
+require_source_citation: true
